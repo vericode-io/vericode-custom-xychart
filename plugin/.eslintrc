@@ -1,0 +1,11 @@
+// ... (outras opções do eslint)
+parserOptions: {
+  ecmaVersion: 2020,
+  sourceType: 'module',
+  ecmaFeatures: {
+    jsx: true,
+  },
+  tsconfigRootDir: __dirname,
+  project: ['./tsconfig.json'],
+},
+// ... (outras opções)
