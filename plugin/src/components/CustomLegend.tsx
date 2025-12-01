@@ -12,8 +12,9 @@ interface LegendItemProps {
 
 interface Props {
   series: LegendItemProps[];
-  onSeriesClick: (seriesIndex: number) => void; // Callback para o 'VerticalXYPanel'
+  onSeriesClick: (seriesIndex: number, event: React.MouseEvent) => void; // Callback para o 'VerticalXYPanel'
   isolatedIndex?: number | null; // Estado vindo do 'VerticalXYPanel'
+  hiddenIndexes?: number[]; // Índices dos itens que estão ocultos
 }
 
 /**
@@ -21,27 +22,41 @@ interface Props {
  * Ele substitui o 'VizLegend' nativo para permitir a funcionalidade
  * de "clique para isolar" (show/hide).
  */
-export const CustomLegend: React.FC<Props> = ({ series, onSeriesClick, isolatedIndex }) => {
+export const CustomLegend: React.FC<Props> = ({ 
+  series, 
+  onSeriesClick, 
+  isolatedIndex, 
+  hiddenIndexes = []
+}) => {
   const theme = useTheme2();
   const styles = getStyles(theme);
 
   return (
     <div className={styles.wrapper}>
       {series.map((item, index) => {
-        const isDimmed = isolatedIndex != null && isolatedIndex !== item.originalIndex;
+        const isHidden = hiddenIndexes.includes(item.originalIndex);
+        const isIsolated = isolatedIndex !== null;
+        const isDimmed = isIsolated 
+                  ? isolatedIndex !== item.originalIndex 
+                  : isHidden;
 
         return (
           <div
             key={item.originalIndex}
             className={styles.itemWrapper}
-            onClick={() => onSeriesClick(item.originalIndex)}
-            style={{ opacity: isDimmed ? 0.3 : 1 }}
+            onClick={(e) => onSeriesClick(item.originalIndex, e)}
+            style={{ opacity: isDimmed ? 0.3 : 1, transition: 'opacity 0.3s' }}
           >
             <div
               className={styles.seriesIcon}
-              style={{ backgroundColor: item.color }}
+              style={{ backgroundColor: isHidden && !isIsolated ? theme.colors.text.disabled : item.color }}
             />
-            <span className={styles.label}>{item.name}</span>
+            <span 
+              className={styles.label}
+              style={{ color: isHidden && !isIsolated ? theme.colors.text.disabled : theme.colors.text.secondary }}
+            >
+              {item.name}
+            </span>
           </div>
         );
       })}

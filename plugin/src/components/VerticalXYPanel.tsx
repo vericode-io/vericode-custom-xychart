@@ -124,6 +124,8 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
   const uPlotInstance = useRef<uPlot | null>(null);
   // ADIÇÃO: Estado para controlar qual série está isolada pela legenda.
   const [isolatedSeriesIndex, setIsolatedSeriesIndex] = useState<number | null>(null);
+  // ADIÇÃO: Estado para controlar quais séries estão ocultas pela legenda.
+  const [hiddenSeriesIndexes, setHiddenSeriesIndexes] = useState<number[]>([]);
   // ADIÇÃO: Estado para guardar os dados do 'CustomTooltip'.
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
 
@@ -195,6 +197,7 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
    */
   useEffect(() => {
     setIsolatedSeriesIndex(null);
+    setHiddenSeriesIndexes([])
     
     const u = uPlotInstance.current;
     if (u) {
@@ -230,7 +233,7 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
    * Handler para o clique na 'CustomLegend'.
    * Controla o uPlot (show/hide) com base no clique.
    */
-  const onSeriesClick = (seriesIndex: number) => {
+  const onSeriesClick = (seriesIndex: number, event: React.MouseEvent) => {
     const u = uPlotInstance.current;
     if (!u) {
       return;
@@ -242,21 +245,57 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
     }
 
     const uPlotSeriesIndex = seriesIndex + 1; // +1 porque uPlot[0] é o eixo X
+    
+    const isCtrlClick = event.ctrlKey || event.metaKey;
 
-    if (isolatedSeriesIndex === seriesIndex) {
-      // Desativa o isolamento
-      for (let i = 1; i < u.series.length; i++) {
-        u.setSeries(i, { show: true });
+    if (isCtrlClick) {
+      
+      // Se estivermos em modo isolado, cancelamos o isolamento primeiro
+      // para voltar ao modo "todos visíveis" e então esconder o clicado.
+      if (isolatedSeriesIndex !== null) {
+          setIsolatedSeriesIndex(null);
+          // Ao sair do isolamento, começamos escondendo apenas o clicado
+          setHiddenSeriesIndexes([seriesIndex]);
+          
+          for (let i = 1; i < u.series.length; i++) {
+              const shouldShow = i !== uPlotSeriesIndex;
+              u.setSeries(i, { show: shouldShow });
+          }
+          return;
       }
-      setIsolatedSeriesIndex(null);
-    } else {
-      // Ativa o isolamento
-      for (let i = 1; i < u.series.length; i++) {
-        const isLimit = xySeries[i - 1]?.isLimit ?? false;
-        const isClicked = i === uPlotSeriesIndex;
-        u.setSeries(i, { show: isLimit || isClicked });
+
+      // Modo normal (sem isolamento): Toggle na lista de escondidos
+      let newHiddenList = [...hiddenSeriesIndexes];
+      if (newHiddenList.includes(seriesIndex)) {
+          // Se já estava escondido, mostra (remove da lista)
+          newHiddenList = newHiddenList.filter(idx => idx !== seriesIndex);
+          u.setSeries(uPlotSeriesIndex, { show: true });
+      } else {
+          // Se estava visível, esconde (adiciona na lista)
+          newHiddenList.push(seriesIndex);
+          u.setSeries(uPlotSeriesIndex, { show: false });
       }
-      setIsolatedSeriesIndex(seriesIndex);
+      setHiddenSeriesIndexes(newHiddenList);
+
+    } else {      
+      // Clicar normal sempre limpa a lista de "escondidos manualmente"
+      setHiddenSeriesIndexes([]);
+
+      if (isolatedSeriesIndex === seriesIndex) {
+          // Se clicou no mesmo, remove isolamento (mostra tudo)
+          for (let i = 1; i < u.series.length; i++) {
+              u.setSeries(i, { show: true });
+          }
+          setIsolatedSeriesIndex(null);
+      } else {
+          // Isola a série clicada
+          for (let i = 1; i < u.series.length; i++) {
+              const isLimit = xySeries[i - 1]?.isLimit ?? false;
+              const isClicked = i === uPlotSeriesIndex;
+              u.setSeries(i, { show: isLimit || isClicked });
+          }
+          setIsolatedSeriesIndex(seriesIndex);
+      }
     }
   };
 
@@ -318,6 +357,7 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
           series={legendItems}
           onSeriesClick={onSeriesClick}
           isolatedIndex={isolatedSeriesIndex}
+          hiddenIndexes={hiddenSeriesIndexes}
         />
       </div>
     </div>

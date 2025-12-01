@@ -88,6 +88,16 @@
             "name": "Series 2",
             "xField": "A-series2",
             "yField": "time"
+          },
+          {
+            "name": "Series 3",
+            "xField": "A-series3",
+            "yField": "time"
+          },
+          {
+            "name": "Series 4",
+            "xField": "A-series1",
+            "yField": "time"
           }
         ],
         "mapping": "manual",
@@ -213,5 +223,5 @@
   "timezone": "",
   "title": "Provisioned image dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 6
+  "version": 1
 }

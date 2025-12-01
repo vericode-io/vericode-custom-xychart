@@ -448,7 +448,6 @@ export const prepConfig = (
   xySeries.forEach((s, si) => {
     const lineColor = s.color.fixed;
     const pointColor = s.color.fixed;
-    const seriesLabel = s.name;
 
     // --- LÓGICA DO EIXO Y (DENTRO DO LOOP) ---
     // MODIFICAÇÃO: A lógica do Eixo Y foi movida para *dentro* do loop.
@@ -498,7 +497,6 @@ export const prepConfig = (
     });
 
     builder.addSeries({
-      name: seriesLabel,
       // 'facets' usa a 'yScaleKey' para linkar a série ao seu eixo Y
       facets: [ { scale: 'x', auto: true }, { scale: yScaleKey, auto: true } ],
       pathBuilder: drawBubbles, 

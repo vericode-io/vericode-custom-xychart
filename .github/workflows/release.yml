@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*' # Dispara apenas quando você sobe uma tag (ex: v1.0.0)
+      - 'v*'
 
 permissions:
   contents: write
@@ -11,11 +11,6 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    # Define as variáveis de ambiente baseadas nos Secrets do repositório
-    env:
-      GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
-      # Nova variável para as URLs (separadas por vírgula)
-      GRAFANA_PLUGIN_ROOT_URLS: ${{ secrets.GRAFANA_PLUGIN_ROOT_URLS }}
 
     steps:
       - uses: actions/checkout@v4
@@ -25,39 +20,26 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-          cache-dependency-path: plugin/package-lock.json # Importante se o package-lock estiver dentro de plugin/
+          cache-dependency-path: plugin/package-lock.json
 
       - name: Install dependencies
-        working-directory: plugin # Define o diretório de trabalho para este passo
+        working-directory: plugin
         run: npm ci
 
       - name: Build Plugin
-        working-directory: plugin # Define o diretório de trabalho para este passo
+        working-directory: plugin
         run: npm run build
 
-      - name: Sign Plugin
-        working-directory: plugin # Define o diretório de trabalho para este passo
-        run: |
-          # Verifica se a variável de URLs foi configurada
-          if [ -z "$GRAFANA_PLUGIN_ROOT_URLS" ]; then
-            echo "::error::A secret GRAFANA_PLUGIN_ROOT_URLS não está definida ou está vazia."
-            exit 1
-          fi
-
-          echo "Assinando plugin para as seguintes URLs: $GRAFANA_PLUGIN_ROOT_URLS"
-          
-          # O comando --rootUrls aceita strings separadas por vírgula (ex: "url1,url2")
-          npx @grafana/sign-plugin --rootUrls "$GRAFANA_PLUGIN_ROOT_URLS"
-
       - name: Package Plugin
-        working-directory: plugin # Define o diretório de trabalho para este passo
+        working-directory: plugin
         run: |
+          # Pega o ID do plugin
           PLUGIN_ID=$(jq -r .id src/plugin.json)
           
-          # Movemos a pasta dist (agora assinada) para a pasta com ID
+          # Renomeia a pasta dist para o ID do plugin (padrão Grafana)
           mv dist $PLUGIN_ID
           
-          # Criamos o zip final
+          # Cria o zip
           zip -r $PLUGIN_ID.zip $PLUGIN_ID
 
       - name: Create GitHub Release
