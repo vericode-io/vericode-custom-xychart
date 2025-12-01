@@ -35,25 +35,21 @@ export const CustomLegend: React.FC<Props> = ({
     <div className={styles.wrapper}>
       {series.map((item, index) => {
         const isHidden = hiddenIndexes.includes(item.originalIndex);
-        const isIsolated = isolatedIndex !== null;
-        const isDimmed = isIsolated 
-                  ? isolatedIndex !== item.originalIndex 
-                  : isHidden;
 
         return (
           <div
             key={item.originalIndex}
             className={styles.itemWrapper}
             onClick={(e) => onSeriesClick(item.originalIndex, e)}
-            style={{ opacity: isDimmed ? 0.3 : 1, transition: 'opacity 0.3s' }}
+            style={{ opacity: isHidden ? 0.3 : 1, transition: 'opacity 0.3s' }}
           >
             <div
               className={styles.seriesIcon}
-              style={{ backgroundColor: isHidden && !isIsolated ? theme.colors.text.disabled : item.color }}
+              style={{ backgroundColor: item.color }}
             />
             <span 
               className={styles.label}
-              style={{ color: isHidden && !isIsolated ? theme.colors.text.disabled : theme.colors.text.secondary }}
+              style={{ color: theme.colors.text.secondary }}
             >
               {item.name}
             </span>

@@ -122,8 +122,6 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
   
   // ADIÇÃO: 'Ref' para manter a instância do uPlot (necessária para a legenda).
   const uPlotInstance = useRef<uPlot | null>(null);
-  // ADIÇÃO: Estado para controlar qual série está isolada pela legenda.
-  const [isolatedSeriesIndex, setIsolatedSeriesIndex] = useState<number | null>(null);
   // ADIÇÃO: Estado para controlar quais séries estão ocultas pela legenda.
   const [hiddenSeriesIndexes, setHiddenSeriesIndexes] = useState<number[]>([]);
   // ADIÇÃO: Estado para guardar os dados do 'CustomTooltip'.
@@ -190,22 +188,23 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
     });
   }, [options.mapping, options.manualSeries, data, theme]);
 
-  /**
-   * ADIÇÃO:
-   * Reseta o isolamento da legenda se o 'xySeries' for recalculado
-   * (seja por mudança nos dados ou nas opções do editor).
-   */
+  // Reseta estados quando os dados ou opções mudam
   useEffect(() => {
-    setIsolatedSeriesIndex(null);
     setHiddenSeriesIndexes([])
-    
-    const u = uPlotInstance.current;
-    if (u) {
-      for (let i = 1; i < u.series.length; i++) {
-        u.setSeries(i, { show: true });
-      }
-    }
   }, [xySeries]);
+  
+  useEffect(() => {
+     const u = uPlotInstance.current;
+     if (!u) { return; }
+ 
+     // As séries de dados começam no índice 1 do uPlot
+     for (let i = 0; i < xySeries.length; i++) {
+         const uPlotIndex = i + 1;
+         const isHidden = hiddenSeriesIndexes.includes(i);
+         
+         u.setSeries(uPlotIndex, { show: !isHidden });
+     }
+   }, [hiddenSeriesIndexes, xySeries]);
 
   /**
    * MODIFICAÇÃO:
@@ -244,58 +243,36 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
       return;
     }
 
-    const uPlotSeriesIndex = seriesIndex + 1; // +1 porque uPlot[0] é o eixo X
-    
     const isCtrlClick = event.ctrlKey || event.metaKey;
+    const allIndexes = xySeries.map((_, i) => i);
 
     if (isCtrlClick) {
-      
-      // Se estivermos em modo isolado, cancelamos o isolamento primeiro
-      // para voltar ao modo "todos visíveis" e então esconder o clicado.
-      if (isolatedSeriesIndex !== null) {
-          setIsolatedSeriesIndex(null);
-          // Ao sair do isolamento, começamos escondendo apenas o clicado
-          setHiddenSeriesIndexes([seriesIndex]);
-          
-          for (let i = 1; i < u.series.length; i++) {
-              const shouldShow = i !== uPlotSeriesIndex;
-              u.setSeries(i, { show: shouldShow });
-          }
-          return;
-      }
+        // --- CTRL + CLICK: Toggle Aditivo ---
+        // Adiciona ou remove APENAS a série clicada da lista de escondidos,
+        // respeitando o estado atual das outras.
+        
+        setHiddenSeriesIndexes(prev => {
+            if (prev.includes(seriesIndex)) {
+                return prev.filter(i => i !== seriesIndex);
+            } else {
+                return [...prev, seriesIndex];
+            }
+        });
 
-      // Modo normal (sem isolamento): Toggle na lista de escondidos
-      let newHiddenList = [...hiddenSeriesIndexes];
-      if (newHiddenList.includes(seriesIndex)) {
-          // Se já estava escondido, mostra (remove da lista)
-          newHiddenList = newHiddenList.filter(idx => idx !== seriesIndex);
-          u.setSeries(uPlotSeriesIndex, { show: true });
-      } else {
-          // Se estava visível, esconde (adiciona na lista)
-          newHiddenList.push(seriesIndex);
-          u.setSeries(uPlotSeriesIndex, { show: false });
-      }
-      setHiddenSeriesIndexes(newHiddenList);
+    } else {
+        // --- CLIQUE NORMAL: Isolamento Exclusivo ---
+        
+        // Isso acontece se a lista de escondidos tem tamanho (Total - 1)
+        // E a série clicada NÃO está na lista.
+        const isAlreadyIsolated = hiddenSeriesIndexes.length === (allIndexes.length - 1) && 
+                                  !hiddenSeriesIndexes.includes(seriesIndex);
 
-    } else {      
-      // Clicar normal sempre limpa a lista de "escondidos manualmente"
-      setHiddenSeriesIndexes([]);
-
-      if (isolatedSeriesIndex === seriesIndex) {
-          // Se clicou no mesmo, remove isolamento (mostra tudo)
-          for (let i = 1; i < u.series.length; i++) {
-              u.setSeries(i, { show: true });
-          }
-          setIsolatedSeriesIndex(null);
-      } else {
-          // Isola a série clicada
-          for (let i = 1; i < u.series.length; i++) {
-              const isLimit = xySeries[i - 1]?.isLimit ?? false;
-              const isClicked = i === uPlotSeriesIndex;
-              u.setSeries(i, { show: isLimit || isClicked });
-          }
-          setIsolatedSeriesIndex(seriesIndex);
-      }
+        if (isAlreadyIsolated) {
+            setHiddenSeriesIndexes([]);
+        } else {
+            const others = allIndexes.filter(i => i !== seriesIndex);
+            setHiddenSeriesIndexes(others);
+        }
     }
   };
 
@@ -356,7 +333,6 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
         <CustomLegend
           series={legendItems}
           onSeriesClick={onSeriesClick}
-          isolatedIndex={isolatedSeriesIndex}
           hiddenIndexes={hiddenSeriesIndexes}
         />
       </div>
