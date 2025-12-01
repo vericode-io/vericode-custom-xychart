@@ -77,7 +77,7 @@ Para que os rótulos fiquem perfeitos (Y à esquerda, X embaixo, sem duplicatas)
 Para detalhes profundos sobre a implementação e análise de código, consulte os ficheiros na raiz do projeto:
 
 * [Instalação e Uso Detalhado](INSTALACAO_E_USO.md)
-* [Detalhes Técnicos e Arquitetura](TECHNICAL_DETAILS.md)
+* [Detalhes Técnicos e Arquitetura](MODIFICACOES_TECNICAS.md)
 * [Análise do Plugin Nativo](xychart_analysis.md)
 
 ---
