@@ -187,11 +187,6 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
       });
     });
   }, [options.mapping, options.manualSeries, data, theme]);
-
-  // Reseta estados quando os dados ou opções mudam
-  useEffect(() => {
-    setHiddenSeriesIndexes([])
-  }, [xySeries]);
   
   useEffect(() => {
      const u = uPlotInstance.current;
@@ -201,7 +196,6 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
      for (let i = 0; i < xySeries.length; i++) {
          const uPlotIndex = i + 1;
          const isHidden = hiddenSeriesIndexes.includes(i);
-         
          u.setSeries(uPlotIndex, { show: !isHidden });
      }
    }, [hiddenSeriesIndexes, xySeries]);
@@ -262,8 +256,6 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
     } else {
         // --- CLIQUE NORMAL: Isolamento Exclusivo ---
         
-        // Isso acontece se a lista de escondidos tem tamanho (Total - 1)
-        // E a série clicada NÃO está na lista.
         const isAlreadyIsolated = hiddenSeriesIndexes.length === (allIndexes.length - 1) && 
                                   !hiddenSeriesIndexes.includes(seriesIndex);
 
