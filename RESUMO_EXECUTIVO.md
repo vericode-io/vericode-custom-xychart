@@ -50,8 +50,8 @@ O repositório contém o código completo, incluindo:
 
 ### 2. Documentação Técnica
 - **`README.md`**: Guia rápido e visão geral.
-- **`INSTALLATION.md`**: Guia passo-a-passo para instalação manual e via Docker.
-- **`TECHNICAL_DETAILS.md`**: Análise aprofundada dos problemas do nativo e das soluções implementadas.
+- **`INSTALACAO_E_USO.md`**: Guia passo-a-passo para instalação manual e via Docker.
+- **`MODIFICACOES_TECNICAS.md`**: Análise aprofundada dos problemas do nativo e das soluções implementadas.
 
 ### 3. Ambiente de Teste
 - **`docker-compose.yml`**: Ambiente pronto para rodar e testar o plugin localmente.
