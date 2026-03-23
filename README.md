@@ -1,6 +1,6 @@
 # Vericode Custom Chart (Vertical XY Panel)
 
-Plugin de visualização para Grafana baseado no plugin **XY Chart** oficial, profundamente modificado para suportar cenários de gráficos **N:1 (Múltiplos X, Um Y)**, comumente usados para visualizações verticais de múltiplas métricas (ex: perfis de poço, logs geológicos).
+Plugin de visualização para Grafana baseado no plugin **XY Chart** oficial, modificado para suportar cenários de gráficos **N:1 (Múltiplos X, Um Y)**, comumente usados para visualizações verticais de múltiplas métricas (ex: perfis de poço, logs geológicos).
 
 Este fork resolve limitações arquiteturais do plugin nativo que impediam a interatividade (tooltips e legendas) quando o gráfico é configurado neste modo.
 
