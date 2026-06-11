@@ -305,11 +305,37 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
     );
   }
 
-  const LEGEND_HEIGHT = 40;
-  const chartHeight = height - LEGEND_HEIGHT;
+  // Verifica series para avaliar o tamanho da legenda;
+  const series = data.series || [];
+  const legendRef = useRef<HTMLDivElement>(null);
+  const [legendActualHeight, setLegendActualHeight] = useState(40);
+
+  //observer para variação de tamanho
+
+  useEffect(() =>
+  {
+    const observer = new ResizeObserver((entries) =>
+    {
+      if(entries[0])
+      {
+        const target = entries[0].target as HTMLElement;
+        setLegendActualHeight(target.offsetHeight);
+      }
+    });
+    if(legendRef.current)
+    {
+      observer.observe(legendRef.current);
+    }
+
+    return () => {observer.disconnect();};
+  }, [series]);
+
+  // const legendActualHeight = 40;
+  const MAX_HEIGHT = 80;
+  const chartHeight = height - legendActualHeight;
 
   return (
-    <div style={{ width, height, position: 'relative' }}>
+    <div style={{ width, height, position: 'relative'}}>
       <UPlotChart
         config={builder}
         data={plotData}
@@ -321,7 +347,7 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
       {tooltip && <CustomTooltip data={tooltip} />}
 
       {/* ADIÇÃO: Renderiza nossa legenda customizada */}
-      <div style={{ height: LEGEND_HEIGHT, overflow: 'auto' }}>
+      <div style={{ maxHeight: MAX_HEIGHT, overflowY: 'auto', overflowX:'hidden'}} ref={legendRef}>
         <CustomLegend
           series={legendItems}
           onSeriesClick={onSeriesClick}

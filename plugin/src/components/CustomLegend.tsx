@@ -64,11 +64,11 @@ const getStyles = (theme: GrafanaTheme2) => ({
   wrapper: css`
     display: flex;
     padding: ${theme.spacing(1)};
-    gap: ${theme.spacing(2)};
-    flex-wrap: nowrap;
+    gap: ${theme.spacing(1)};
+    wrap: true;
+    flex-wrap: wrap;
     justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: visible;
     height: 100%;
   `,
   itemWrapper: css`
