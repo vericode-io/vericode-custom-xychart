@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Vertical Time Series",
+  "name": "ONS Vertical Time Series by Vericode",
   "id": "vericode-vertical-timeseries-panel",
   "info": {
     "keywords": ["panel"],
