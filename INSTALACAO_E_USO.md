@@ -14,7 +14,7 @@ Diferente do plugin nativo (que apresenta falhas neste cenário), este fork poss
 
 O plugin contém os seguintes arquivos principais modificados:
 
-vericode-custom-chart/
+vericode-vertical-timeseries-panel/
 ├── src/
 │   ├── components/
 │   │   ├── CustomLegend.tsx         # Legenda customizada (clique para isolar)
@@ -54,14 +54,14 @@ vericode-custom-chart/
    Copie a pasta `dist` gerada para o diretório de plugins do seu servidor Grafana:
    
    # Exemplo no Linux
-   sudo cp -r dist /var/lib/grafana/plugins/vericode-custom-chart
+   sudo cp -r dist /var/lib/grafana/plugins/vericode-vertical-timeseries-panel
    
 
 3. **Permita Plugin Não Assinado**:
    Como este é um plugin privado, você deve autorizá-lo no `grafana.ini`:
    
    [plugins]
-   allow_loading_unsigned_plugins = vericode-custom-chart
+   allow_loading_unsigned_plugins = vericode-vertical-timeseries-panel
    
 
 4. **Reinicie o Grafana**:
@@ -75,10 +75,10 @@ Adicione as seguintes variáveis de ambiente ao seu container Grafana:
 
 
 environment:
-  - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=vericode-custom-chart
+  - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=vericode-vertical-timeseries-panel
 volumes:
   # Mapeia a pasta dist local para a pasta de plugins do container
-  - ./dist:/var/lib/grafana/plugins/vericode-custom-chart
+  - ./dist:/var/lib/grafana/plugins/vericode-vertical-timeseries-panel
 
 
 ## Uso do Plugin
@@ -112,7 +112,7 @@ Para evitar que o label do Eixo Y ("TEMPO") apareça duplicado no Eixo X (um bug
 ## Troubleshooting
 
 ### "Plugin not signed"
-Se o Grafana recusar carregar o plugin, verifique se o ID `vericode-custom-chart` está corretamente listado na configuração `allow_loading_unsigned_plugins` do seu `grafana.ini`.
+Se o Grafana recusar carregar o plugin, verifique se o ID `vericode-vertical-timeseries-panel` está corretamente listado na configuração `allow_loading_unsigned_plugins` do seu `grafana.ini`.
 
 ### Tooltip não aparece
 Verifique se você está usando a versão compilada mais recente (`dist`). O tooltip nativo falhava em linhas puras, mas nossa correção (`prepConfig.ts`) resolve isso.

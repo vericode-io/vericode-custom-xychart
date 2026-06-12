@@ -86,17 +86,194 @@
           },
           {
             "name": "Series 2",
-            "xField": "A-series2",
+            "xField": "A-series1",
             "yField": "time"
           },
           {
             "name": "Series 3",
-            "xField": "A-series3",
+            "xField": "A-series2",
             "yField": "time"
           },
           {
             "name": "Series 4",
-            "xField": "A-series1",
+            "xField": "A-series3",
+            "yField": "time"
+          },
+          {
+            "name": "Series 5",
+            "xField": "A-series4",
+            "yField": "time"
+          },
+          {
+            "name": "Series 6",
+            "xField": "A-series5",
+            "yField": "time"
+          },
+          {
+            "name": "Series 7",
+            "xField": "A-series6",
+            "yField": "time"
+          },
+          {
+            "name": "Series 8",
+            "xField": "A-series7",
+            "yField": "time"
+          },
+          {
+            "name": "Series 9",
+            "xField": "A-series8",
+            "yField": "time"
+          },
+          {
+            "name": "Series 10",
+            "xField": "A-series9",
+            "yField": "time"
+          },{
+            "name": "Series 11",
+            "xField": "A-series10",
+            "yField": "time"
+          },
+          {
+            "name": "Series 12",
+            "xField": "A-series11",
+            "yField": "time"
+          },
+          {
+            "name": "Series 13",
+            "xField": "A-series12",
+            "yField": "time"
+          },
+          {
+            "name": "Series 14",
+            "xField": "A-series13",
+            "yField": "time"
+          },
+          {
+            "name": "Series 15",
+            "xField": "A-series14",
+            "yField": "time"
+          },
+          {
+            "name": "Series 16",
+            "xField": "A-series15",
+            "yField": "time"
+          },
+          {
+            "name": "Series 17",
+            "xField": "A-series16",
+            "yField": "time"
+          },
+          {
+            "name": "Series 18",
+            "xField": "A-series17",
+            "yField": "time"
+          },
+          {
+            "name": "Series 19",
+            "xField": "A-series18",
+            "yField": "time"
+          },
+          {
+            "name": "Series 20",
+            "xField": "A-series19",
+            "yField": "time"
+          },{
+            "name": "Series 21",
+            "xField": "A-series20",
+            "yField": "time"
+          },
+          {
+            "name": "Series 22",
+            "xField": "A-series21",
+            "yField": "time"
+          },
+          {
+            "name": "Series 23",
+            "xField": "A-series22",
+            "yField": "time"
+          },
+          {
+            "name": "Series 24",
+            "xField": "A-series23",
+            "yField": "time"
+          },
+          {
+            "name": "Series 25",
+            "xField": "A-series24",
+            "yField": "time"
+          },
+          {
+            "name": "Series 26",
+            "xField": "A-series25",
+            "yField": "time"
+          },
+          {
+            "name": "Series 27",
+            "xField": "A-series26",
+            "yField": "time"
+          },
+          {
+            "name": "Series 28",
+            "xField": "A-series27",
+            "yField": "time"
+          },
+          {
+            "name": "Series 29",
+            "xField": "A-series28",
+            "yField": "time"
+          },
+          {
+            "name": "Series 30",
+            "xField": "A-series29",
+            "yField": "time"
+          },{
+            "name": "Series 31",
+            "xField": "A-series30",
+            "yField": "time"
+          },
+          {
+            "name": "Series 32",
+            "xField": "A-series31",
+            "yField": "time"
+          },
+          {
+            "name": "Series 33",
+            "xField": "A-series32",
+            "yField": "time"
+          },
+          {
+            "name": "Series 34",
+            "xField": "A-series33",
+            "yField": "time"
+          },
+          {
+            "name": "Series 35",
+            "xField": "A-series34",
+            "yField": "time"
+          },
+          {
+            "name": "Series 36",
+            "xField": "A-series35",
+            "yField": "time"
+          },
+          {
+            "name": "Series 37",
+            "xField": "A-series36",
+            "yField": "time"
+          },
+          {
+            "name": "Series 38",
+            "xField": "A-series37",
+            "yField": "time"
+          },
+          {
+            "name": "Series 39",
+            "xField": "A-series38",
+            "yField": "time"
+          },
+          {
+            "name": "Series 40",
+            "xField": "A-series39",
             "yField": "time"
           }
         ],
@@ -119,11 +296,11 @@
           },
           "refId": "A",
           "scenarioId": "random_walk",
-          "seriesCount": 4
+          "seriesCount": 40
         }
       ],
       "title": "Sample Panel Title",
-      "type": "vericode-custom-chart-panel"
+      "type": "vericode-vertical-timeseries-panel"
     },
     {
       "datasource": {
@@ -205,7 +382,7 @@
         }
       ],
       "title": "Sample Panel Title",
-      "type": "vericode-custom-chart-panel"
+      "type": "vericode-vertical-timeseries-panel"
     }
   ],
   "preload": false,

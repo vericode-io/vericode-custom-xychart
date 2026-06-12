@@ -10,7 +10,7 @@ A análise inicial demonstrou que o plugin nativo (XY Chart) possuía limitaçõ
 
 ### Plugin Criado: **Vericode Custom Chart**
 
-- **ID**: `vericode-custom-chart`
+- **ID**: `vericode-vertical-timeseries-panel`
 - **Nome**: Vericode Custom Chart
 - **Funcionalidade Principal**: Gráfico XY Vertical (N:1) com suporte a múltiplas séries independentes e interatividade total (tooltips e legendas funcionais).
 
