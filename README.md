@@ -47,11 +47,11 @@ Acesse: `http://localhost:3000` (admin/admin).
 ### Via Manual (On-Premise)
 
 1.  Gere a pasta `dist/` com `yarn build`.
-2.  Copie a pasta `dist` para o diretório de plugins do servidor (`/var/lib/grafana/plugins/vericode-custom-chart`).
+2.  Copie a pasta `dist` para o diretório de plugins do servidor (`/var/lib/grafana/plugins/vericode-vertical-timeseries-panel`).
 3.  Permita plugins não assinados no `grafana.ini`:
     ```ini
     [plugins]
-    allow_loading_unsigned_plugins = vericode-custom-chart
+    allow_loading_unsigned_plugins = vericode-vertical-timeseries-panel
     ```
 4.  Reinicie o Grafana.
 
