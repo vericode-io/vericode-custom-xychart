@@ -60,10 +60,6 @@
               {
                 "color": "green",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -128,7 +124,8 @@
             "name": "Series 10",
             "xField": "A-series9",
             "yField": "time"
-          },{
+          },
+          {
             "name": "Series 11",
             "xField": "A-series10",
             "yField": "time"
@@ -177,7 +174,8 @@
             "name": "Series 20",
             "xField": "A-series19",
             "yField": "time"
-          },{
+          },
+          {
             "name": "Series 21",
             "xField": "A-series20",
             "yField": "time"
@@ -226,7 +224,8 @@
             "name": "Series 30",
             "xField": "A-series29",
             "yField": "time"
-          },{
+          },
+          {
             "name": "Series 31",
             "xField": "A-series30",
             "yField": "time"
@@ -277,7 +276,7 @@
             "yField": "time"
           }
         ],
-        "mapping": "manual",
+        "mapping": "auto",
         "seriesCountSize": "sm",
         "showSeriesCount": false,
         "text": "Default value of text input option",
@@ -287,19 +286,86 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "1.0.0",
+      "pluginVersion": "1.1.0",
       "targets": [
         {
           "datasource": {
             "type": "grafana-testdata-datasource",
-            "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
+            "uid": "trlxrdZVk"
           },
           "refId": "A",
           "scenarioId": "random_walk",
-          "seriesCount": 40
+          "seriesCount": 38
         }
       ],
       "title": "Sample Panel Title",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "PERSON1",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "A-series1",
+                "A-series2"
+              ],
+              "reducer": "first"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "PERSON2",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "A-series39",
+                "A-series38"
+              ],
+              "reducer": "firstNotNull"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "Aseries"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "Aseries1"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD HH:MM:SS",
+                "destinationType": "time",
+                "targetField": "time"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
       "type": "vericode-vertical-timeseries-panel"
     },
     {
@@ -369,7 +435,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "1.0.0",
+      "pluginVersion": "1.1.0",
       "targets": [
         {
           "alias": "",
