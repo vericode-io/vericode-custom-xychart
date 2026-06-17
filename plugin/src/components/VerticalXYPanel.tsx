@@ -174,7 +174,10 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
     }
     const yField = frame.fields[0];
     const xFields = frame.fields.filter(
-      (field, index) => index > 0 && field.type === FieldType.number
+      (field, index) =>
+        index > 0 &&
+        field.type === FieldType.number &&
+        field.values.some((v) => v !== null && v !== undefined && !Number.isNaN(v))
     );
 
     return xFields.map((xField, index): XYSeries => {
