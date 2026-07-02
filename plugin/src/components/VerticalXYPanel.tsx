@@ -155,6 +155,13 @@ export const VerticalXYPanel: React.FC<Props> = ({ options, data, width, height 
             return undefined;
           }
 
+          const hasData = xField.values.some(
+            (v) => v !== null && v !== undefined && !Number.isNaN(v)
+          );
+          if (!hasData) {
+            return undefined;
+          }
+
           const seriesName = seriesConfig.name ?? xField.name;
 
           return mapFieldsToXYSeries(xField, yField, theme, {
